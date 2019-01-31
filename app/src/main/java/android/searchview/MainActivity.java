@@ -31,5 +31,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        searchView.setImageButtonCancelClickListener(new ISearcher.onImageButtonCancelClickListener() {
+            @Override
+            public void onClick(EditText input, ImageView cancel, View view) {
+                Toast.makeText(MainActivity.this,"清除",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

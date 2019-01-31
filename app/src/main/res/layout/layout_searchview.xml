@@ -4,6 +4,8 @@
     android:id="@+id/rl_mapsearcher"
     android:layout_width="match_parent"
     android:layout_height="50dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:background="@drawable/search_bg"
     android:gravity="center_horizontal">
 
