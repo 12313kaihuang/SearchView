@@ -29,7 +29,7 @@
             android:layout_height="32dp"
             android:background="@drawable/ic_voice_icon"
             android:clickable="true"
-            android:contentDescription="语音"
+            android:contentDescription="@string/str_voice"
             android:focusable="true"
             android:visibility="visible" />
 
@@ -41,7 +41,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:text="搜索"
+            android:text="@string/str_search"
             android:textColor="#000"
             android:textSize="20sp"
             android:visibility="gone" />
@@ -59,7 +59,7 @@
         android:layout_marginTop="8dp"
         android:layout_toStartOf="@id/rl_mapsearcher_btn"
         android:background="#ccc"
-        android:contentDescription="分隔线"
+        android:contentDescription="@string/line"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rl_mapsearcher_btn"
         app:layout_constraintTop_toTopOf="parent" />
@@ -76,7 +76,7 @@
         android:layout_toStartOf="@id/iv_line"
         android:background="@drawable/ic_clear"
         android:clickable="true"
-        android:contentDescription="清除按钮"
+        android:contentDescription="@string/clear_btn"
         android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -94,7 +94,7 @@
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/iv_search"
         android:background="@android:color/transparent"
-        android:hint="请输入关键字"
+        android:hint="@string/editText_hint"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
         android:textColor="@android:color/black"
@@ -112,7 +112,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="搜索"
+        android:contentDescription="@string/str_search"
         android:src="@drawable/ic_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

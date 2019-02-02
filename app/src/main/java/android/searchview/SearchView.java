@@ -116,6 +116,7 @@ public class SearchView extends RelativeLayout implements ISearcher {
 
     /**
      * 语音按钮点击事件
+     *
      * @param listener listener
      */
     @Override
@@ -125,6 +126,7 @@ public class SearchView extends RelativeLayout implements ISearcher {
 
     /**
      * 清除图标点击事件
+     *
      * @param listener listener
      */
     @Override
@@ -134,6 +136,7 @@ public class SearchView extends RelativeLayout implements ISearcher {
 
     /**
      * “搜索”点击事件
+     *
      * @param listener listener
      */
     @Override
@@ -143,6 +146,7 @@ public class SearchView extends RelativeLayout implements ISearcher {
 
     /**
      * 获取EditText的内容
+     *
      * @return EditText的内容
      */
     @Override
@@ -151,7 +155,18 @@ public class SearchView extends RelativeLayout implements ISearcher {
     }
 
     /**
+     * 设置EditText的内容
+     *
+     * @param content content
+     */
+    @Override
+    public void setSearchCondition(String content) {
+        et_input.setText(content);
+    }
+
+    /**
      * 获取EditText
+     *
      * @return EditText
      */
     @Override

@@ -42,6 +42,12 @@ public interface ISearcher {
     String getSearchCondition();
 
     /**
+     * 设置EditText的内容
+     * @param content content
+     */
+    void setSearchCondition(String content);
+
+    /**
      * 获取EditText
      * @return EditText
      */
