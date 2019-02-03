@@ -47,7 +47,7 @@ dependencies {
 **[说明]**  
 `ClearEditText`相当于是从`SearchView`中抽出来的一个带有清除按钮的输入框，其清除图标需通过`drawableEnd`或`drawableRight`设置。  
 
-**示例：**
+### 示例：
 * 布局文件中使用:
 ```xml
  <com.searchview.SearchView
