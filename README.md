@@ -2,10 +2,11 @@
 
 [![](https://jitpack.io/v/12313kaihuang/SearchView.svg)](https://jitpack.io/#12313kaihuang/SearchView)
 ### 效果图：  
+***SearchView:***  
 ![](imgs/TIM图片20190131162357.png)      
 ![](imgs/TIM图片20190131162509.png)      
 
-ClearEditText:
+***ClearEditText:***  
 ![](imgs/TIM图片20190131162347.png)        
 ![](imgs/TIM图片20190131162549.png)    
 ### 使用：  
@@ -43,7 +44,8 @@ dependencies {
 | setonTextViewSearchClickListener | 方法 | 搜索的点击事件 |
 | setImageButtonCancelClickListener | 方法 | 清除按钮点击事件 |
 
-另外`ClearEditText`相当于是从`SearchView`中抽出来的一个带有清除按钮的输入框，其清除图标需通过`drawableEnd`或`drawableRight`设置。  
+**[说明]**  
+`ClearEditText`相当于是从`SearchView`中抽出来的一个带有清除按钮的输入框，其清除图标需通过`drawableEnd`或`drawableRight`设置。  
 
 **示例：**
 * 布局文件中使用:
