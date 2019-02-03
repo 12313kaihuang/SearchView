@@ -1,13 +1,14 @@
-package android.searchview;
+package com.searchview;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * 项目名：XunFeiTest
- * 包名：  com.android.xunfeitest
+ * 项目名：SearchView
+ * 包名：  com.searchview
  * 文件名：ISearcher
  * 创建者：HY
  * 创建时间：2019/1/31 14:25
@@ -39,19 +40,37 @@ public interface ISearcher {
      * 获取EditText的内容
      * @return EditText的内容
      */
-    String getSearchCondition();
+    String getSearchContent();
 
     /**
      * 设置EditText的内容
      * @param content content
      */
-    void setSearchCondition(String content);
+    void setSearchContent(String content);
 
     /**
      * 获取EditText
      * @return EditText
      */
     EditText getEt_input();
+
+    /**
+     * 设置搜索图标
+     * @param searchIcon searchIcon
+     */
+    void setSearchIcon(Drawable searchIcon);
+
+    /**
+     * 设置语音图标
+     * @param voiceIcon voiceIcon
+     */
+    void setVoiceIcon(Drawable voiceIcon);
+
+    /**
+     * 设置清除图标
+     * @param clearIcon clearIcon
+     */
+    void setClearIcon(Drawable clearIcon);
 
     /**
      * 语音按钮点击回调接口

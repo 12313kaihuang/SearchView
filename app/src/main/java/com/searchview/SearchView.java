@@ -1,6 +1,8 @@
-package android.searchview;
+package com.searchview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,12 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * 项目名：XunFeiTest
- * 包名：  com.android.xunfeitest
+ * 项目名：SearchView
+ * 包名：  com.searchview
  * 文件名：SearchView
  * 创建者：HY
  * 创建时间：2019/1/31 14:26
@@ -30,8 +33,9 @@ public class SearchView extends RelativeLayout implements ISearcher {
 
 
     EditText et_input;
-    ImageButton ib_voice;
-    ImageButton ib_cancle;
+    ImageButton ib_voice;  //语音图标
+    ImageButton ib_cancle; //清除图标
+    ImageView search_ico;  //搜索图标
     TextView tv_search;
     ConstraintLayout rl_mapsearcher;
     View view;
@@ -41,6 +45,7 @@ public class SearchView extends RelativeLayout implements ISearcher {
         view = LayoutInflater.from(context).inflate(R.layout.layout_searchview, this);
         initTextWatcher();
         initView();
+        initParams(context, attrs);
     }
 
     public SearchView(Context context, AttributeSet attrs) {
@@ -48,6 +53,39 @@ public class SearchView extends RelativeLayout implements ISearcher {
         view = LayoutInflater.from(context).inflate(R.layout.layout_searchview, this);
         initTextWatcher();
         initView();
+        initParams(context, attrs);
+    }
+
+    /**
+     * 初始化自定义属性
+     *
+     * @param context context
+     * @param attrs   attrs
+     */
+    private void initParams(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SearchView);
+        if (typedArray != null) {
+            String hint = typedArray.getString(R.styleable.SearchView_hint);
+            if (hint != null) {
+                et_input.setHint(hint);
+            }
+
+            Drawable clear_ico = typedArray.getDrawable(R.styleable.SearchView_clear_ico);
+            if (clear_ico != null) {
+                ib_cancle.setBackground(clear_ico);
+            }
+
+            Drawable voice_ico = typedArray.getDrawable(R.styleable.SearchView_voice_ico);
+            if (clear_ico != null) {
+                ib_voice.setBackground(voice_ico);
+            }
+
+            Drawable search_ico = typedArray.getDrawable(R.styleable.SearchView_search_ico);
+            if (clear_ico != null) {
+                this.search_ico.setImageDrawable(search_ico);
+            }
+            typedArray.recycle();
+        }
     }
 
 
@@ -55,6 +93,7 @@ public class SearchView extends RelativeLayout implements ISearcher {
         et_input = view.findViewById(R.id.et_input);
         ib_voice = view.findViewById(R.id.ib_voice);
         ib_cancle = view.findViewById(R.id.ib_cancle);
+        search_ico = view.findViewById(R.id.iv_search);
         tv_search = view.findViewById(R.id.tv_search);
         rl_mapsearcher = view.findViewById(R.id.rl_mapsearcher);
 
@@ -150,7 +189,7 @@ public class SearchView extends RelativeLayout implements ISearcher {
      * @return EditText的内容
      */
     @Override
-    public String getSearchCondition() {
+    public String getSearchContent() {
         return et_input.getText().toString().trim();
     }
 
@@ -160,7 +199,7 @@ public class SearchView extends RelativeLayout implements ISearcher {
      * @param content content
      */
     @Override
-    public void setSearchCondition(String content) {
+    public void setSearchContent(String content) {
         et_input.setText(content);
     }
 
@@ -172,6 +211,36 @@ public class SearchView extends RelativeLayout implements ISearcher {
     @Override
     public EditText getEt_input() {
         return et_input;
+    }
+
+    /**
+     * 设置搜索图标
+     *
+     * @param searchIcon searchIcon
+     */
+    @Override
+    public void setSearchIcon(Drawable searchIcon) {
+        this.search_ico.setImageDrawable(searchIcon);
+    }
+
+    /**
+     * 设置语音图标
+     *
+     * @param voiceIcon voiceIcon
+     */
+    @Override
+    public void setVoiceIcon(Drawable voiceIcon) {
+        ib_voice.setBackground(voiceIcon);
+    }
+
+    /**
+     * 设置清除图标
+     *
+     * @param clearIcon clearIcon
+     */
+    @Override
+    public void setClearIcon(Drawable clearIcon) {
+        ib_cancle.setBackground(clearIcon);
     }
 
     /**
