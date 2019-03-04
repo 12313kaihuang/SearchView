@@ -1,10 +1,9 @@
 package com.searchview;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 /**
  * 项目名：SearchView
@@ -19,78 +18,101 @@ import android.widget.TextView;
 public interface ISearcher {
 
     /**
-     * 语音按钮点击事件
+     * 搜索按钮点击事件
+     *
      * @param listener 回调接口listener
      */
-    void setImageButtonVoiceClickListener(onImageButtonVoiceClickListener listener);
+    void setOnSearchImageViewClickListener(OnImageViewClickListener listener);
 
     /**
-     * 清除图标点击事件
+     * 清除按钮点击事件
+     *
      * @param listener 回调接口listener
      */
-    void setImageButtonCancelClickListener(onImageButtonCancelClickListener listener);
+    void setOnClearImageButtonClickListener(OnImageButtonClickListener listener);
+
+    /**
+     * 语音按钮点击事件
+     *
+     * @param listener 回调接口listener
+     */
+    void setOnVoiceImageButtonClickListener(OnImageButtonClickListener listener);
+
 
     /**
      * “搜索”点击事件
+     *
      * @param listener 回调接口listener
      */
-    void setonTextViewSearchClickListener(onTextViewSearchClickListener listener);
+    void setOnSearchTextViewClickListener(OnSearchTextViewClickListener listener);
 
     /**
      * 获取EditText的内容
+     *
      * @return EditText的内容
      */
     String getSearchContent();
 
     /**
      * 设置EditText的内容
+     *
      * @param content content
      */
     void setSearchContent(String content);
 
     /**
      * 获取EditText
+     *
      * @return EditText
      */
-    EditText getEt_input();
+    EditText getEditText();
 
     /**
-     * 设置搜索图标
-     * @param searchIcon searchIcon
+     * 点击搜索时的回调接口
      */
-    void setSearchIcon(Drawable searchIcon);
+
+    interface OnSearchTextViewClickListener {
+        /**
+         * onTextViewClick
+         *
+         * @param input 输入框
+         * @param view  view
+         */
+        void onSearchClick(EditText input, View view);
+
+    }
+
 
     /**
-     * 设置语音图标
-     * @param voiceIcon voiceIcon
+     * 点击ImageButton回调接口
      */
-    void setVoiceIcon(Drawable voiceIcon);
+    interface OnImageButtonClickListener {
 
-    /**
-     * 设置清除图标
-     * @param clearIcon clearIcon
-     */
-    void setClearIcon(Drawable clearIcon);
+        /**
+         * onImageViewClick
+         *
+         * @param input       输入框
+         * @param imageButton imageButton
+         * @param view        view
+         */
+        void onImageButtonClick(EditText input, ImageButton imageButton, View view);
 
-    /**
-     * 语音按钮点击回调接口
-     */
-    interface onImageButtonVoiceClickListener {
-        void onClick(EditText input, ImageView voice, View view);
     }
 
     /**
-     * 清除按钮点击回调接口
+     * 点击ImageView回调接口
      */
-    interface onImageButtonCancelClickListener {
-        void onClick(EditText input, ImageView cancle, View view);
-    }
+    interface OnImageViewClickListener {
 
-    /**
-     * 点击搜多回调接口
-     */
-    interface onTextViewSearchClickListener {
-        void onClick(EditText input, TextView search, View view);
+        /**
+         * onImageViewClick
+         *
+         * @param input     输入框
+         * @param imageView imageView
+         * @param view      view
+         */
+        void onImageViewClick(EditText input, ImageView imageView, View view);
+
     }
 
 }

@@ -6,7 +6,7 @@
     android:layout_height="50dp"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:background="@drawable/search_bg"
+    android:background="@drawable/sv_search_bg"
     android:gravity="center_horizontal">
 
     <RelativeLayout
@@ -27,9 +27,9 @@
             android:id="@+id/ib_voice"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@drawable/ic_voice_icon"
+            android:background="@drawable/sv_ic_voice_icon"
             android:clickable="true"
-            android:contentDescription="@string/str_voice"
+            android:contentDescription="@string/search_view_str_voice"
             android:focusable="true"
             android:visibility="visible" />
 
@@ -41,7 +41,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:text="@string/str_search"
+            android:text="@string/search_view_str_search"
             android:textColor="#000"
             android:textSize="20sp"
             android:visibility="gone" />
@@ -59,7 +59,7 @@
         android:layout_marginTop="8dp"
         android:layout_toStartOf="@id/rl_mapsearcher_btn"
         android:background="#ccc"
-        android:contentDescription="@string/line"
+        android:contentDescription="@string/search_view_line"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rl_mapsearcher_btn"
         app:layout_constraintTop_toTopOf="parent" />
@@ -74,9 +74,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:layout_toStartOf="@id/iv_line"
-        android:background="@drawable/ic_clear"
+        android:background="@drawable/sv_ic_clear"
         android:clickable="true"
-        android:contentDescription="@string/clear_btn"
+        android:contentDescription="@string/search_view_clear_btn"
         android:focusable="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -94,7 +94,7 @@
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@+id/iv_search"
         android:background="@android:color/transparent"
-        android:hint="@string/editText_hint"
+        android:hint="@string/search_view_editText_hint"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
         android:textColor="@android:color/black"
@@ -112,8 +112,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="@string/str_search"
-        android:src="@drawable/ic_search"
+        android:contentDescription="@string/search_view_str_search"
+        android:src="@drawable/sv_ic_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

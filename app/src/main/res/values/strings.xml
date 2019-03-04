@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">SearchView</string>
-    <string name="str_voice">语音</string>
-    <string name="str_search">搜索</string>
-    <string name="line">分隔线</string>
-    <string name="clear_btn">清除按钮</string>
-    <string name="editText_hint">请输入关键字</string>
+    <string name="search_view_app_name">SearchView</string>
+    <string name="search_view_str_voice">语音</string>
+    <string name="search_view_str_search">搜索</string>
+    <string name="search_view_line">分隔线</string>
+    <string name="search_view_clear_btn">清除按钮</string>
+    <string name="search_view_editText_hint">请输入关键字</string>
 </resources>

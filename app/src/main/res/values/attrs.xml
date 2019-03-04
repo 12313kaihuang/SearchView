@@ -5,11 +5,15 @@
         <!--hint-->
         <attr name="hint" format="string"/>
         <!--搜索图标-->
-        <attr name="search_ico" format="reference" />
+        <attr name="svSearchIcon" format="reference" />
         <!--清空图标-->
-        <attr name="clear_ico" format="reference" />
+        <attr name="svClearIcon" format="reference" />
         <!--语音图标-->
-        <attr name="voice_ico" format="reference" />
+        <attr name="svVoiceIcon" format="reference" />
+        <!--点击搜索后是否自动隐藏虚拟键盘-->
+        <attr name="svEnableAutoHideSoftKey" format="boolean"/>
+        <!--点击了搜索(不是搜索图标)后是否清除EditText的焦点-->
+        <attr name="svEnableClearFocusAfterSearch" format="boolean"/>
     </declare-styleable>
 
 </resources>

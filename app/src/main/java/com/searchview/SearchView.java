@@ -1,14 +1,17 @@
 package com.searchview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.support.constraint.ConstraintLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,20 +27,32 @@ import android.widget.TextView;
  * 描述：  自定义控件SearchView
  */
 
+@SuppressWarnings("unused")
 public class SearchView extends RelativeLayout implements ISearcher {
 
     private TextWatcher textWatcher;
-    private ISearcher.onImageButtonVoiceClickListener onImageButtonVoiceClickListener;
-    private ISearcher.onImageButtonCancelClickListener onImageButtonCancelClickListener;
-    private ISearcher.onTextViewSearchClickListener onTextViewSearchClickListener;
+    private ISearcher.OnImageViewClickListener onSearchImageViewClickListener;
+    private ISearcher.OnImageButtonClickListener onClearImageButtonClickListener;
+    private ISearcher.OnImageButtonClickListener onVoiceImageButtonClickListener;
+    private OnSearchTextViewClickListener onSearchTextViewClickListener;
 
 
     EditText et_input;
-    ImageButton ib_voice;  //语音图标
-    ImageButton ib_cancle; //清除图标
-    ImageView search_ico;  //搜索图标
+
+    /**
+     * 点击搜索后是否自动隐藏虚拟键盘
+     */
+    private boolean enableAutoHideSoftKey;
+    /**
+     * 点击了搜索(不是搜索图标)后是否清除EditText的焦点
+     */
+    private boolean enableClearFocusAfterSearch;
+
+    ImageButton imgBtn_voice;  //语音图标
+    ImageButton imgBtn_cancel; //清除图标
+    ImageView iv_search;  //搜索图标
     TextView tv_search;
-    ConstraintLayout rl_mapsearcher;
+    ConstraintLayout constraintLayout;
     View view;
 
     public SearchView(Context context, AttributeSet attrs, int defStyle) {
@@ -70,20 +85,24 @@ public class SearchView extends RelativeLayout implements ISearcher {
                 et_input.setHint(hint);
             }
 
-            Drawable clear_ico = typedArray.getDrawable(R.styleable.SearchView_clear_ico);
+            Drawable clear_ico = typedArray.getDrawable(R.styleable.SearchView_svClearIcon);
             if (clear_ico != null) {
-                ib_cancle.setBackground(clear_ico);
+                imgBtn_cancel.setBackground(clear_ico);
             }
 
-            Drawable voice_ico = typedArray.getDrawable(R.styleable.SearchView_voice_ico);
+            Drawable voice_ico = typedArray.getDrawable(R.styleable.SearchView_svVoiceIcon);
             if (clear_ico != null) {
-                ib_voice.setBackground(voice_ico);
+                imgBtn_voice.setBackground(voice_ico);
             }
 
-            Drawable search_ico = typedArray.getDrawable(R.styleable.SearchView_search_ico);
+            Drawable search_ico = typedArray.getDrawable(R.styleable.SearchView_svSearchIcon);
             if (clear_ico != null) {
-                this.search_ico.setImageDrawable(search_ico);
+                this.iv_search.setImageDrawable(search_ico);
             }
+
+            this.enableAutoHideSoftKey = typedArray.getBoolean(R.styleable.SearchView_svEnableAutoHideSoftKey, true);
+            this.enableClearFocusAfterSearch = typedArray.getBoolean(R.styleable.SearchView_svEnableClearFocusAfterSearch, true);
+
             typedArray.recycle();
         }
     }
@@ -91,27 +110,27 @@ public class SearchView extends RelativeLayout implements ISearcher {
 
     private void initView() {
         et_input = view.findViewById(R.id.et_input);
-        ib_voice = view.findViewById(R.id.ib_voice);
-        ib_cancle = view.findViewById(R.id.ib_cancle);
-        search_ico = view.findViewById(R.id.iv_search);
+        imgBtn_voice = view.findViewById(R.id.ib_voice);
+        imgBtn_cancel = view.findViewById(R.id.ib_cancle);
+        iv_search = view.findViewById(R.id.iv_search);
         tv_search = view.findViewById(R.id.tv_search);
-        rl_mapsearcher = view.findViewById(R.id.rl_mapsearcher);
+        constraintLayout = view.findViewById(R.id.rl_mapsearcher);
 
         et_input.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    rl_mapsearcher.setSelected(true);
+                    constraintLayout.setSelected(true);
                     et_input.setHint("");
                     if (et_input.getText().length() > 0) {
-                        ib_cancle.setVisibility(View.VISIBLE);
+                        imgBtn_cancel.setVisibility(View.VISIBLE);
                         tv_search.setVisibility(View.VISIBLE);
-                        ib_voice.setVisibility(View.GONE);
+                        imgBtn_voice.setVisibility(View.GONE);
                     } else {
                         et_input.setSelected(false);
-                        ib_cancle.setVisibility(View.GONE);
+                        imgBtn_cancel.setVisibility(View.GONE);
                         tv_search.setVisibility(View.GONE);
-                        ib_voice.setVisibility(View.VISIBLE);
+                        imgBtn_voice.setVisibility(View.VISIBLE);
                     }
                 } else {
                     et_input.setHint("请输入关键字");
@@ -123,64 +142,116 @@ public class SearchView extends RelativeLayout implements ISearcher {
             et_input.addTextChangedListener(textWatcher);
         }
 
-        ib_voice.setOnClickListener(new OnClickListener() {
+        //搜索图标点击事件
+        iv_search.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onImageButtonVoiceClickListener != null) {
-                    onImageButtonVoiceClickListener.onClick(et_input, ib_voice, SearchView.this);
+                if (onSearchImageViewClickListener != null) {
+                    onSearchImageViewClickListener.onImageViewClick(et_input, iv_search, v);
                 }
             }
         });
 
-        ib_cancle.setOnClickListener(new OnClickListener() {
+        //语音图标
+        imgBtn_voice.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onVoiceImageButtonClickListener != null) {
+                    onVoiceImageButtonClickListener.onImageButtonClick(et_input, imgBtn_voice, SearchView.this);
+                }
+            }
+        });
+
+        //取消图标
+        imgBtn_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 et_input.setText("");
-                et_input.clearFocus();
-                if (onImageButtonCancelClickListener != null) {
-                    onImageButtonCancelClickListener.onClick(et_input, ib_cancle, SearchView.this);
+                if (onClearImageButtonClickListener != null) {
+                    onClearImageButtonClickListener.onImageButtonClick(et_input, imgBtn_cancel, v);
                 }
             }
         });
 
+        //搜索
         tv_search.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onTextViewSearchClickListener != null) {
-                    onTextViewSearchClickListener.onClick(et_input, tv_search, SearchView.this);
+                if (enableClearFocusAfterSearch) {
+                    et_input.clearFocus();
+                }
+                Context context = getContext();
+                if (context != null && context instanceof Activity && enableAutoHideSoftKey) {
+                    //收起软键盘
+                    Activity activity = (Activity) context;
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null && activity.getCurrentFocus() != null) {
+                        imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0); //强制隐藏键盘
+                    }
+                }
+                if (onSearchTextViewClickListener != null) {
+                    onSearchTextViewClickListener.onSearchClick(et_input, v);
                 }
             }
         });
     }
 
     /**
-     * 语音按钮点击事件
+     * 设置点击搜索时是否自动隐藏虚拟键盘
      *
-     * @param listener listener
+     * @param enableAutoHideSoftKey 点击搜索时是否自动隐藏虚拟键盘
+     */
+    public void setEnableAutoHideSoftKey(boolean enableAutoHideSoftKey) {
+        this.enableAutoHideSoftKey = enableAutoHideSoftKey;
+    }
+
+    /**
+     * 点击了搜索(不是搜索图标)后是否清除EditText的焦点
+     *
+     * @param enableClearFocusAfterSearch 点击了搜索(不是搜索图标)后是否清除EditText的焦点
+     */
+    public void setEnableClearFocusAfterSearch(boolean enableClearFocusAfterSearch) {
+        this.enableClearFocusAfterSearch = enableClearFocusAfterSearch;
+    }
+
+    /**
+     * 搜索图标点击事件
+     *
+     * @param listener 回调接口listener
      */
     @Override
-    public void setImageButtonVoiceClickListener(ISearcher.onImageButtonVoiceClickListener listener) {
-        this.onImageButtonVoiceClickListener = listener;
+    public void setOnSearchImageViewClickListener(OnImageViewClickListener listener) {
+        this.onSearchImageViewClickListener = listener;
     }
 
     /**
      * 清除图标点击事件
      *
-     * @param listener listener
+     * @param listener 回调接口listener
      */
     @Override
-    public void setImageButtonCancelClickListener(ISearcher.onImageButtonCancelClickListener listener) {
-        this.onImageButtonCancelClickListener = listener;
+    public void setOnClearImageButtonClickListener(OnImageButtonClickListener listener) {
+        this.onClearImageButtonClickListener = listener;
     }
 
     /**
-     * “搜索”点击事件
+     * 语音图标点击事件
      *
-     * @param listener listener
+     * @param listener 回调接口listener
      */
     @Override
-    public void setonTextViewSearchClickListener(ISearcher.onTextViewSearchClickListener listener) {
-        this.onTextViewSearchClickListener = listener;
+    public void setOnVoiceImageButtonClickListener(OnImageButtonClickListener listener) {
+        this.onVoiceImageButtonClickListener = listener;
+    }
+
+    /**
+     * "搜索"点击事件
+     *
+     * @param listener 回调接口listener
+     */
+    @Override
+    public void setOnSearchTextViewClickListener(OnSearchTextViewClickListener listener) {
+        this.onSearchTextViewClickListener = listener;
     }
 
     /**
@@ -209,38 +280,36 @@ public class SearchView extends RelativeLayout implements ISearcher {
      * @return EditText
      */
     @Override
-    public EditText getEt_input() {
+    public EditText getEditText() {
         return et_input;
     }
 
     /**
      * 设置搜索图标
      *
-     * @param searchIcon searchIcon
+     * @param resId DrawableRes
      */
-    @Override
-    public void setSearchIcon(Drawable searchIcon) {
-        this.search_ico.setImageDrawable(searchIcon);
+    public void setSearchIcon(@DrawableRes int resId) {
+        this.iv_search.setImageDrawable(getContext().getDrawable(resId));
     }
+
 
     /**
      * 设置语音图标
      *
-     * @param voiceIcon voiceIcon
+     * @param resId DrawableRes
      */
-    @Override
-    public void setVoiceIcon(Drawable voiceIcon) {
-        ib_voice.setBackground(voiceIcon);
+    public void setVoiceIcon(@DrawableRes int resId) {
+        imgBtn_voice.setBackground(getContext().getDrawable(resId));
     }
 
     /**
      * 设置清除图标
      *
-     * @param clearIcon clearIcon
+     * @param resId DrawableRes
      */
-    @Override
-    public void setClearIcon(Drawable clearIcon) {
-        ib_cancle.setBackground(clearIcon);
+    public void setClearIcon(@DrawableRes int resId) {
+        imgBtn_cancel.setBackground(getContext().getDrawable(resId));
     }
 
     /**
@@ -263,13 +332,13 @@ public class SearchView extends RelativeLayout implements ISearcher {
             public void afterTextChanged(Editable s) {
                 int length = s.length();
                 if (length > 0 && et_input.isFocused()) {
-                    ib_voice.setVisibility(View.GONE);
-                    ib_cancle.setVisibility(View.VISIBLE);
+                    imgBtn_voice.setVisibility(View.GONE);
+                    imgBtn_cancel.setVisibility(View.VISIBLE);
                     tv_search.setVisibility(View.VISIBLE);
                 } else {
-                    ib_cancle.setVisibility(View.GONE);
+                    imgBtn_cancel.setVisibility(View.GONE);
                     tv_search.setVisibility(View.GONE);
-                    ib_voice.setVisibility(View.VISIBLE);
+                    imgBtn_voice.setVisibility(View.VISIBLE);
                 }
             }
         };
