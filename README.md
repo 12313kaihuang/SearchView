@@ -1,14 +1,10 @@
 # SearchView--自定义搜索框
 
 [![](https://jitpack.io/v/12313kaihuang/SearchView.svg)](https://jitpack.io/#12313kaihuang/SearchView)
-### 效果图：  
-***SearchView:***  
-![](imgs/TIM图片20190131162357.png)      
-![](imgs/TIM图片20190131162509.png)      
+### 效果图：    
+<img src="imgs/SearchView.gif" alt="Sample"  width="300" height="480">         
 
-***ClearEditText:***  
-![](imgs/TIM图片20190131162347.png)        
-![](imgs/TIM图片20190131162549.png)    
+  
 ### 使用：  
 1. 在项目根目录的`build.gradle`中添加一句`maven { url 'https://jitpack.io' }`
 ```xml
@@ -53,7 +49,7 @@ dependencies {
 `ClearEditText`相当于是从`SearchView`中抽出来的一个带有清除按钮的输入框，其清除图标需通过`drawableEnd`或`drawableRight`设置。  
 
 ### 示例：
-* 布局xml文件中使用:
+* 布局`xml`文件中使用:
 ```xml
  <!-- 下面示例中的值等于默认值 -->
  <com.searchview.SearchView
@@ -68,7 +64,7 @@ dependencies {
     app:svEnableAutoHideSoftKey="true"
     app:svEnableClearFocusAfterSearch="true"/>
 ```
-* java文件中：
+* `java`文件中：
 ```java
 public class SearchViewActivity extends AppCompatActivity {
 

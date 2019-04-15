@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.searchview.SearchViewActivity">
 
+    <!-- 下面示例中的值等于默认值 -->
     <com.searchview.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
@@ -13,6 +14,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        app:hint="请输入关键字"
+        app:svSearchIcon="@drawable/sv_ic_search"
+        app:svVoiceIcon="@drawable/sv_ic_voice_icon"
+        app:svClearIcon="@drawable/sv_ic_clear"
+        app:svEnableAutoHideSoftKey="true"
+        app:svEnableClearFocusAfterSearch="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
