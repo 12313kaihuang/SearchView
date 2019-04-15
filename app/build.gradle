@@ -1,12 +1,12 @@
-apply plugin: 'com.android.application'
-//apply plugin: 'com.android.library'
-//apply plugin:'com.github.dcendents.android-maven'
-//group='com.github.12313kaihuang'
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
+apply plugin:'com.github.dcendents.android-maven'
+group='com.github.12313kaihuang'
 
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.searchview"
+//        applicationId "com.searchview"
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
